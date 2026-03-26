@@ -8,7 +8,8 @@ public static void main(String[] args) {
         System.out.print("Enter b: ");
         double b = scanner.nextDouble();
         System.out.print("Enter c: ");
-        double c = scanner.nextDouble();
+        double c = scanner.nextDouble();    
+        scanner.close();
 
         if (a == 0) {
             // Giải phương trình bậc nhất bx + c = 0

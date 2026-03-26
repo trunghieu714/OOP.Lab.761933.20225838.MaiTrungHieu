@@ -2,8 +2,12 @@ import javax.swing.JOptionPane;
 
 public class CalculateTwoNumbers {
     public static void main(String[] args) {
-        String strNum1 = JOptionPane.showInputDialog(null, "Please input the first number: ", "Input", JOptionPane.INFORMATION_MESSAGE);
-        String strNum2 = JOptionPane.showInputDialog(null, "Please input the second number: ", "Input", JOptionPane.INFORMATION_MESSAGE);
+        String strNum1 = JOptionPane.showInputDialog(null,
+         "Please input the first number: ", "Input",
+          JOptionPane.INFORMATION_MESSAGE);
+        String strNum2 = JOptionPane.showInputDialog(null, 
+        "Please input the second number: ", "Input",
+         JOptionPane.INFORMATION_MESSAGE);
 
         double num1 = Double.parseDouble(strNum1);
         double num2 = Double.parseDouble(strNum2);
@@ -19,7 +23,9 @@ public class CalculateTwoNumbers {
             results += "Quotient: Cannot divide by zero!";
         }
 
-        JOptionPane.showMessageDialog(null, results, "Calculation Results", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, results,
+         "Calculation Results",
+          JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 }

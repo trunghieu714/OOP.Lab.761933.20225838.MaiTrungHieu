@@ -1,0 +1,9 @@
+Câu 1:Chuyện gì sẽ xảy ra nếu người dùng chọn nút "Cancel"?
+-khi ấn nút cancel Phương thức showConfirmDialog sẽ trả về 
+giá trị hằng số JOptionPane.CANCEL_OPTION (thường là 2) 
+hoặc JOptionPane.CLOSED_OPTION (thường là -1).
+nhưng trong mã nguồn (option == JOptionPane.YES_OPTION ? "Yes" : "No")
+mã nguồn sẽ kiểm trả if nên nó sẽ không close nó sẽ hiển thị ra no
+Câu 2:Làm thế nào để tùy chỉnh các lựa chọn cho người dùng?
+Ví dụ: chỉ hiện hai lựa chọn "Yes" và "No", HOẶC thay bằng "I do" và "I don't".
+-cần thêm tham số JOptionPane.YES_NO_OPTION vào hàm showConfirmDialog.
