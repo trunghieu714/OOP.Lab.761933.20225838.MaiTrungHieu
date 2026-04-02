@@ -1,0 +1,9 @@
+- không
+- Java phân biệt các Constructor dựa trên chữ ký hàm (Method Signature),
+bao gồm số lượng tham số, kiểu dữ liệu và thứ tự của chúng.
+- Vì cả title và category đều là kiểu String, Java sẽ thấy hai 
+Constructor này có cùng một chữ ký là DigitalVideoDisc(String).
+- Khi bạn gọi new DigitalVideoDisc("Some String"), trình biên dịch
+sẽ không thể xác định được bạn đang muốn gán giá trị đó cho title
+hay category, dẫn đến lỗi "Duplicate method" (Trùng lặp phương thức) 
+ngay khi biên dịch.
