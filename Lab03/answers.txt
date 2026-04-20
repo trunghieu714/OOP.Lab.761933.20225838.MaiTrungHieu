@@ -1,0 +1,12 @@
+Java là ngôn ngữ truyền tham trị.
+Giải thích:
+Trong Java, khi bạn truyền một đối số cho một phương thức, một bản sao của giá trị đối số được tạo ra và truyền cho 
+phương thức đó.
+- Đối với các kiểu dữ liệu nguyên thủy, chính giá trị đó được sao chép.
+- Đối với các kiểu dữ liệu đối tượng, giá trị được sao chép là tham chiếu (con trỏ) đến đối tượng.
+Lý do là:
+1. Việc hoán đổi hai tham chiếu đối tượng trong một phương thức (ví dụ: public static void swap(Object o1, Object o2)) 
+không ảnh hưởng đến các tham chiếu gốc bên ngoài phương thức. Phương thức chỉ hoán đổi các bản sao cục bộ của chính nó 
+về các tham chiếu.
+2. Việc sửa đổi trạng thái nội bộ của một đối tượng (ví dụ: sử dụng một phương thức setter như dvd.setTitle("New Title")) 
+CÓ ảnh hưởng đến đối tượng gốc, bởi vì cả tham chiếu gốc và tham chiếu được sao chép đều trỏ đến cùng một đối tượng trong bộ nhớ.
