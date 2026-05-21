@@ -1,0 +1,98 @@
+========================================================================
+                      OOP LAB 04 - CÂU TRẢ LỜI CÂU HỎI LÝ THUYẾT
+========================================================================
+
+------------------------------------------------------------------------
+MỤC 9: Các hàm khởi tạo (constructors) của toàn bộ lớp và lớp cha
+------------------------------------------------------------------------
+Câu hỏi 1: Những lớp nào là quan hệ thu gom (aggregates) của các lớp khác?
+Hãy kiểm tra xem tất cả các hàm khởi tạo của các lớp chứa (whole classes)
+đã khởi tạo các thành phần (parts) của chúng chưa?
+
+Trả lời:
+- Các lớp có quan hệ thu gom (aggregation) với các lớp khác bao gồm:
+  * CompactDisc (CD) thu gom Track (chứa một danh sách ArrayList các đối tượng Track).
+  * Cart thu gom Media (chứa một danh sách ArrayList các đối tượng Media).
+  * Store thu gom Media (chứa một danh sách ArrayList các đối tượng Media).
+- Tất cả các hàm khởi tạo của các lớp chứa này đều đã khởi tạo các thành phần
+  danh sách của chúng một cách chính xác (ví dụ: khởi tạo ArrayList bằng từ khóa `new`).
+
+Câu hỏi 2: Viết các hàm khởi tạo cho lớp cha và lớp con. Loại bỏ các phương
+thức setter dư thừa nếu có.
+
+Trả lời:
+- Các hàm khởi tạo đã được viết cho tất cả các lớp biểu diễn phương tiện truyền thông:
+  * Media(id, title, category, cost)
+  * Disc(id, title, category, cost, length, director) kế thừa Media
+  * DigitalVideoDisc(title, category, director, length, cost) kế thừa Disc
+  * CompactDisc(id, title, category, cost, director, artist) kế thừa Disc
+  * Book(id, title, category, cost, authors) kế thừa Media
+- Các phương thức setter dư thừa đã được loại bỏ:
+  * Loại bỏ phương thức setter trực tiếp cho thuộc tính `length` trong CompactDisc, vì tổng độ dài của CD được tính toán động bằng tổng độ dài của các track thành phần.
+  * Danh sách tác giả (`authors`) trong Book không sử dụng setter trực tiếp mà được quản lý thông qua hai phương thức `addAuthor()` và `removeAuthor()`.
+
+------------------------------------------------------------------------
+MỤC 10: Phần tử duy nhất trong danh sách (Unique item in a list)
+------------------------------------------------------------------------
+Câu hỏi: Nếu đối tượng truyền vào không phải là một instance của Media, điều gì sẽ xảy ra?
+
+Trả lời:
+- Trong phương thức `equals(Object o)` đã được ghi đè của lớp Media:
+  ```java
+  if (o == null || !(o instanceof Media)) return false;
+  ```
+  Nếu đối tượng truyền vào không phải là một thực thể (instance) của Media (hoặc nếu nó là null), phương thức sẽ trả về `false` một cách an toàn.
+- Nếu không thực hiện kiểm tra này mà ép kiểu trực tiếp bằng `(Media) o`, chương trình sẽ ném ra ngoại lệ `java.lang.ClassCastException` tại thời điểm chạy (runtime) và gây lỗi crash chương trình.
+
+------------------------------------------------------------------------
+MỤC 12: Sắp xếp các phương tiện trong giỏ hàng (Sort media in the cart)
+------------------------------------------------------------------------
+Câu hỏi 1: Lớp nào nên thực hiện (implement) interface Comparable?
+
+Trả lời:
+- Lớp trừu tượng `Media` nên thực hiện interface `Comparable<Media>`. Việc này giúp tất cả các lớp con (DVD, CD, Book) tự động kế thừa và chia sẻ hành vi so sánh tự nhiên mặc định.
+
+Câu hỏi 2: Trong các lớp đó, bạn nên cài đặt phương thức compareTo() như thế nào để phản ánh đúng thứ tự sắp xếp mong muốn?
+
+Trả lời:
+- Phương thức `compareTo(Media other)` trong lớp `Media` có thể được ghi đè như sau:
+  ```java
+  @Override
+  public int compareTo(Media other) {
+      int titleCompare = this.getTitle().compareToIgnoreCase(other.getTitle());
+      if (titleCompare != 0) {
+          return titleCompare;
+      }
+      return Float.compare(other.getCost(), this.getCost()); // Giá giảm dần (đắt hơn xếp trước)
+  }
+  ```
+
+Câu hỏi 3: Chúng ta có thể có hai quy tắc sắp xếp các phần tử (theo tiêu đề trước rồi đến giá, và theo giá trước rồi đến tiêu đề) nếu sử dụng hướng tiếp cận interface Comparable này hay không?
+
+Trả lời:
+- Không. Interface `Comparable` chỉ cho phép định nghĩa duy nhất một "thứ tự tự nhiên" (natural ordering) thông qua phương thức `compareTo()`. Nếu muốn có nhiều quy tắc sắp xếp linh hoạt khác nhau, chúng ta bắt buộc phải sử dụng interface `Comparator` và định nghĩa các lớp so sánh riêng biệt (giống như cách chúng ta đã tạo `MediaComparatorByTitleCost` và `MediaComparatorByCostTitle`).
+
+Câu hỏi 4: Giả sử các DVD có quy tắc sắp xếp khác với các loại phương tiện khác, cụ thể là theo tiêu đề, sau đó là thời lượng giảm dần, rồi đến giá cả. Bạn sẽ sửa đổi mã nguồn của mình như thế nào để cho phép điều này?
+
+Trả lời:
+- Chúng ta có thể sửa đổi phương thức `compareTo()` trong lớp `Media` (hoặc viết một `Comparator` riêng) để kiểm tra xem cả hai đối tượng được so sánh có cùng là thực thể của lớp `DigitalVideoDisc` hay không:
+  ```java
+  @Override
+  public int compareTo(Media other) {
+      if (this instanceof DigitalVideoDisc && other instanceof DigitalVideoDisc) {
+          DigitalVideoDisc d1 = (DigitalVideoDisc) this;
+          DigitalVideoDisc d2 = (DigitalVideoDisc) other;
+          
+          int titleComp = d1.getTitle().compareToIgnoreCase(d2.getTitle());
+          if (titleComp != 0) return titleComp;
+          
+          int lenComp = Integer.compare(d2.getLength(), d1.getLength()); // Thời lượng giảm dần
+          if (lenComp != 0) return lenComp;
+          
+          return Float.compare(d1.getCost(), d2.getCost()); // Giá tăng dần
+      }
+      // Quy tắc mặc định cho các loại Media khác
+      return this.getTitle().compareToIgnoreCase(other.getTitle());
+  }
+  ```
+========================================================================
