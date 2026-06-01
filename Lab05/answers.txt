@@ -1,0 +1,19 @@
+Câu hỏi 1.3: So sánh các thành phần Swing và AWT
+1. Container Cấp Cao (Top-Level Containers):
+   - AWT: Sử dụng các container cấp cao kế thừa trực tiếp từ hệ điều hành như `Frame`, `Dialog`, và `Applet`.
+   - Swing: Sử dụng `JFrame`, `JDialog`, và `JApplet`. Trong Swing, các thành phần con phải được thêm vào Content Pane (`getContentPane()`) thay vì thêm trực tiếp vào container cấp cao (mặc dù các phiên bản Java hiện đại tự động ủy quyền lệnh `add()` vào content pane).
+
+2. Thành Phần Heavyweight và Lightweight:
+   - Thành phần AWT: Là heavyweight (hạng nặng). Chúng tương tác trực tiếp với các thành phần đồ họa gốc của hệ điều hành (peer components). Ví dụ: một AWT Button trên Windows là một nút bấm Windows thực sự. Điều này khiến giao diện AWT phụ thuộc vào hệ điều hành, khó tùy biến và dễ gặp lỗi hiển thị khi xếp chồng.
+   - Thành phần Swing: Là lightweight (hạng nhẹ - ngoại trừ container cấp cao). Chúng được viết hoàn toàn bằng Java và vẽ trực tiếp bằng Java 2D mà không phụ thuộc vào HĐH. Điều này giúp Swing tùy biến cực tốt, hỗ trợ Pluggable Look and Feel (đổi giao diện đồng nhất trên mọi HĐH), và hỗ trợ đổ bóng/trong suốt.
+
+3. Đặt Tên Lớp:
+   - Các lớp thành phần Swing bắt đầu bằng chữ "J" (ví dụ: `JButton`, `JTextField`, `JLabel`, `JPanel`) trong khi AWT không có (ví dụ: `Button`, `TextField`, `Label`, `Panel`).
+Câu hỏi 14: Điều gì xảy ra khi bạn không cập nhật để bắt (catch) ngoại lệ?
+1. Lỗi Biên Dịch (Compilation Failure):
+   - Vì `PlayerException` là một checked exception (ngoại lệ kiểm tra - kế thừa từ `java.lang.Exception` chứ không phải `java.lang.RuntimeException`), trình biên dịch Java bắt buộc phải tuân theo quy tắc "xử lý hoặc khai báo" (handle or declare).
+   - Bất kỳ phương thức nào gọi đến một phương thức ném ra `PlayerException` (chẳng hạn như `play()`) đều phải đặt trong khối `try-catch` hoặc phải khai báo `throws PlayerException` ở chữ ký phương thức đó.
+   - Nếu chúng ta không cập nhật mã nguồn ở các nơi gọi (như `Aims.java` hoặc các bộ lắng nghe sự kiện của nút bấm GUI) để bắt ngoại lệ này, chương trình sẽ không thể biên dịch thành công.
+
+2. Lựa Chọn Thiết Kế Ngoại Lệ:
+   - Việc sử dụng checked exception đảm bảo rằng ứng dụng luôn phải chủ động kiểm soát trường hợp đĩa/sản phẩm không thể phát được (do độ dài <= 0), từ đó đưa ra hướng xử lý phù hợp (như hiển thị thông báo lỗi trực quan bằng Dialog cho người dùng) thay vì để ứng dụng gặp sự cố bất ngờ hoặc chạy sai lệch dữ liệu.
